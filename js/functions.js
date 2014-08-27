@@ -11,11 +11,30 @@
 // remap jQuery to $
 (function($){
 
+	var curTimeout = -1;
+	var averageRespTime = 100;
+
 	/* trigger when page is ready */
 	$(document).ready(function (){
-	
-		// your functions go here
-	
+		var searchBar = $(".search .search-bar");
+		var searchProgress = $(".search .search-progress");
+		
+		function performSearch(){
+			curTimeout = -1;
+			textVal = searchBar.val();
+			searchProgress.addClass("right");
+			searchProgress.animate({width:0},1000);
+			//theMovieDb.search.getMulti({query:textVal},function(a){console.log(a)},function(b){console.log(b)}));
+		}
+		
+		searchBar.bind('input propertychange', function(d,e,f) {
+			clearTimeout(curTimeout);
+			curTimeout = setTimeout(performSearch, 1000);
+			searchProgress.clearQueue();
+			searchProgress.animate({width:0},2);
+			searchProgress.removeClass("right");
+			searchProgress.animate({width:searchProgress.parent().width()},1000);
+		});
 	});
 	
 	
