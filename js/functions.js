@@ -12,7 +12,6 @@
 (function($){
 	var STATES = Object.freeze({EMPTY:0,UNLOADED:1,LOADING:2,LOADED:3});
 
-
 	var typeTimeout = -1;
 	var loadTimeout = -1;
 	var averageRespTime = 100;
@@ -29,7 +28,7 @@
 		var progress = new ProgressIndicator(searchProgress);
 		var pos = new BoxPos(searchDiv);
 		
-		//to stop flash at top before centered.
+		//to stop flash at top before centred.
 		searchDiv.transition({opacity:1},500);
 
 		//theMovieDb.search.getMulti({query:textVal},function(a){console.log(a)},function(b){console.log(b)}));
@@ -42,6 +41,9 @@
 			if(l > 2) {
 				progress.startForward();
 				pos.startForward();
+				
+				setTimeout
+				
 			} else if (l == 0 /* AND showing results */){
 				progress.startBackwards();
 				pos.startBackwards();
@@ -60,16 +62,5 @@
 	
     $(window).resize();
 	
-	/* optional triggers
-	
-	$(window).load(function() {
-		
-	});
-	
-	$(window).resize(function() {
-		
-	});
-	
-	*/
 
 })(window.jQuery);
