@@ -57,3 +57,22 @@ ProgressIndicator.prototype.startBackwards = function() {
 			});
 	});
 }
+
+
+function BoxPos(boxJQ) {
+	this.dom = boxJQ;
+}
+
+BoxPos.prototype.startForward = function() {
+	this.dom.addClass('top');
+/* 	setTimeout(function(dom){
+		dom.addClass('top');
+	},1000,this.dom); */
+}
+
+BoxPos.prototype.startBackwards = function() {
+	this.dom.removeClass('top');
+/* 	setTimeout(function(dom){
+		dom.removeClass('top');
+	},1000,this.dom); */
+}

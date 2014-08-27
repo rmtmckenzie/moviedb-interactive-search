@@ -27,62 +27,26 @@
 		var searchProgress = $(".search .search-progress");
 		
 		var progress = new ProgressIndicator(searchProgress);
+		var pos = new BoxPos(searchDiv);
 		
+		//to stop flash at top before centered.
 		searchDiv.transition({opacity:1},500);
-		
-		function doneSearch(){
-			state = STATES.LOADED;
-			searchDiv.addClass("top");
-			//searchDiv.animate({top:0},1000)
-		}
-		
-		function keyTimeout(){
-		
-			if (searchBar.val().length == 0){
-				//clear all
-				searchDiv.removeClass("top");
-				state = STATES.EMPTY;
-				//todo: delete masonry blocks
-				$(window).resize();
-			} else {
-				state = STATES.LOADING;
-				typeTimeout = -1;
-				textVal = searchBar.val();
-				searchProgress.addClass("right");
-				searchProgress.animate({width:0},1000);
-				
-				loadTimeout = setTimeout(doneSearch, 1000);
-				
-				//theMovieDb.search.getMulti({query:textVal},function(a){console.log(a)},function(b){console.log(b)}));
-			}
-		}
+
+		//theMovieDb.search.getMulti({query:textVal},function(a){console.log(a)},function(b){console.log(b)}));
+
 		
 		searchBar.bind('input propertychange', function(d,e,f) {
-			clearTimeout(typeTimeout);
-			clearTimeout(doneSearch);
+
 			var l = searchBar.val().length;
 			
 			if(l > 2) {
 				progress.startForward();
+				pos.startForward();
 			} else if (l == 0 /* AND showing results */){
 				progress.startBackwards();
+				pos.startBackwards();
 			}
 			
-			
-			
-/* 			if (0 < l && l < 3) {
-				//don't erase last results or show new
-				if(state != STATES.LOADED){
-					state = STATES.UNLOADED
-				}
-			} else {
-				//3 or greater, wait for next keypress or timeout
-				typeTimeout = setTimeout(keyTimeout, KEYTIMEOUT);
-				searchProgress.clearQueue();
-				searchProgress.animate({width:0},2);
-				searchProgress.removeClass("right");
-				searchProgress.animate({width:searchProgress.parent().width()},KEYTIMEOUT);
-			} */
 		});
 	});	
 	

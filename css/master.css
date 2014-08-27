@@ -14,7 +14,7 @@ body {
 	position: absolute;
 	width: 100%;
 	font-size: 60px;
-	transition: top 1s;
+	transition: top ease 1s 1s;
 	opacity: 0;
 }
 
