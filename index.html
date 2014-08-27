@@ -70,42 +70,35 @@
 </head>
 
 <body>
-
-	<header>
-		
-		<h1><a href="/">Page Title</a></h1>
-		
-		<nav>
-		
-			<ol>
-				<li><a href="">Nav Link 1</a></li>
-				<li><a href="">Nav Link 2</a></li>
-				<li><a href="">Nav Link 3</a></li>
-			</ol>
-		
-		</nav>
 	
-	</header>
 	
 	<div class="search">
-		<input type="text" placeholder="Search...">
-        <input type="button" value="Search">
+		<input class="search-bar" type="text" placeholder="Search...">
+		<div class="search-progress"></div>
 	</div>
 	
 	
 	<footer>
-		Uses movieDB, jQuery, Reset, and Masonry
+		Uses movieDB, jQuery, Reset, jQuery Transit, and Masonry
 	</footer>
 
 	
 <!-- Grab Google CDN's jQuery. fall back to local if necessary -->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script>window.jQuery || document.write("<script src='libraries/jquery/jquery-2.1.1.min.js'>\x3C/script>")</script>
+<script src="libraries/jquery/jquery.transit.js"></script>
 
 <script src="libraries/masonry/masonry.pkgd.js"></script>
 
+<script src="libraries/moviedb/themoviedb.js"></script>
+
+<script>
+	theMovieDb.common.api_key = "253092cb882ff18f7f7cc7fa11936a74";
+</script>
+
+
 <!-- this is where we put our custom functions -->
-<!-- don't forget to concatenate and minify if needed -->
+<script src="js/search.js"></script>
 <script src="js/functions.js"></script>
 
 
