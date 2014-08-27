@@ -26,6 +26,10 @@
 		var searchBar = $(".search .search-bar");
 		var searchProgress = $(".search .search-progress");
 		
+		var progress = new ProgressIndicator(searchProgress);
+		
+		searchDiv.transition({opacity:1},500);
+		
 		function doneSearch(){
 			state = STATES.LOADED;
 			searchDiv.addClass("top");
@@ -41,7 +45,6 @@
 				//todo: delete masonry blocks
 				$(window).resize();
 			} else {
-			
 				state = STATES.LOADING;
 				typeTimeout = -1;
 				textVal = searchBar.val();
@@ -59,7 +62,15 @@
 			clearTimeout(doneSearch);
 			var l = searchBar.val().length;
 			
-			if (0 < l && l < 3) {
+			if(l > 2) {
+				progress.startForward();
+			} else if (l == 0 /* AND showing results */){
+				progress.startBackwards();
+			}
+			
+			
+			
+/* 			if (0 < l && l < 3) {
 				//don't erase last results or show new
 				if(state != STATES.LOADED){
 					state = STATES.UNLOADED
@@ -71,19 +82,18 @@
 				searchProgress.animate({width:0},2);
 				searchProgress.removeClass("right");
 				searchProgress.animate({width:searchProgress.parent().width()},KEYTIMEOUT);
-			}
+			} */
 		});
-	});
-	
+	});	
 	
 	$(window).resize(function (){
 		if(state == STATES.EMPTY){
-			console.log("resizing", state)
 			$('.search').css({
 				top: ($(window).height() - $('.search').outerHeight())/2
 			});
 		}
     });
+	
     $(window).resize();
 	
 	/* optional triggers
