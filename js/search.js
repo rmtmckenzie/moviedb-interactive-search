@@ -1,78 +1,80 @@
 
+(function($){
 
-function ProgressIndicator(barJQ) {
-	this.dom = barJQ;
-	this.parent = barJQ.parent();
-	this.right = false;
-	this.active = false;
-}
+	function Searcher(text,display){
+		this.text = text;
+		this.search = theMovieDb.search.getMulti;
+		this.display = display;
+	}
 
-ProgressIndicator.prototype.TIMEOUT1 = 1000;
-ProgressIndicator.prototype.TIMEOUT2 = 1000;
+	Searcher.prototype.doSearch = function(){
+		var d = this.display;
+		this.search(
+			{query:this.text, adult:false},
+			function(data){d.display(data)},
+			function(data){d.error(data)}
+		);
+	}
 
-ProgressIndicator.prototype.startForward = function(){
-	var _this = this,
-		pw = this.parent.width();
-	
-	this.toStart()
-	this.active = true;
-	
-	this.dom.animate({width:pw},this.TIMEOUT1,undefined,function(){
-		_this.right = true;
-		_this.dom.addClass('right')
-			.animate({width:0},_this.TIMEOUT2,undefined,function(){
-				_this.active = false;
-			});
-	});
+
+	function ResultsDisplayer(domJQ){
+		this.dom = domJQ;
+		this.resultsDom = $(".masonry-container",domJQ);
+		this.desplaying = false;
+		this.search = null;
+		this.timerID = -1;
+	}
+
+	ResultsDisplayer.prototype.startSearch = function(text) {
+		clearTimeout(this.timerID);
+		this.text = text;
+		this.timerID = setTimeout(function(_this){
+			_this.doSearch();
+		},1000,this);
+	}
+
+	ResultsDisplayer.prototype.stop = function(){
+		clearTimeout(this.timerID);
+	}
+
+	ResultsDisplayer.prototype.doSearch = function(){
+		this.search = new Searcher(this.text, this);
+		this.search.doSearch();
+	}
+
+	ResultsDisplayer.prototype.display = function(data){
+		this.displaySearch = this.search;
+		
+		var d = $.parseJSON(data),
+			r = d.results;
 			
-}
+		console.log(r);
+		//TODO - add results to screen properly
+		
+		var els = []
+		for(var i = 0, l = r.length; i < l; i ++){
+			els.push(new Result(r[i],this.resultsDom));
+		}
+		
+		if(this.masonry){
+			this.masonry.reloadItems();
+		} else {
+			this.resultsDom.masonry({itemSelector:".resultElement"});
+			this.masonry = this.resultsDom.data('masonry');
+		}
+		
+		//this.resultsDom.text(data);
+	}
 
-ProgressIndicator.prototype.toStart = function() {
-	this.dom.width(0);
-	this.dom.removeClass('right');
-	this.right = false;
-	this.dom.stop().clearQueue();
-}
+	ResultsDisplayer.prototype.error = function(err){
+		
+	}
 
-ProgressIndicator.prototype.toFinish = function() {
-	this.dom.width(0);
-	this.dom.addClass('right');
-	this.right = true;
-	this.dom.stop().clearQueue();
-}
+	ResultsDisplayer.prototype.clear = function(){
+		//TODO - clear
+		this.stop();
+		this.resultsDom.text("");
+	}
 
-ProgressIndicator.prototype.startBackwards = function() {
-	var _this = this,
-		pw = this.parent.width();
-	
-	this.toFinish();
-	
-	this.active = true;
-	
-	this.dom.animate({width:pw},this.TIMEOUT2,undefined,function(){
-		_this.right = false;
-		_this.dom.removeClass('right')
-			.animate({width:0},_this.TIMEOUT1,undefined,function(){
-				_this.active = false;
-			});
-	});
-}
-
-
-function BoxPos(boxJQ) {
-	this.dom = boxJQ;
-}
-
-BoxPos.prototype.startForward = function() {
-	this.dom.addClass('top');
-/* 	setTimeout(function(dom){
-		dom.addClass('top');
-	},1000,this.dom); */
-}
-
-BoxPos.prototype.startBackwards = function() {
-	this.dom.removeClass('top');
-/* 	setTimeout(function(dom){
-		dom.removeClass('top');
-	},1000,this.dom); */
-}
+	window.ResultsDisplayer = ResultsDisplayer;
+})(window.jQuery);

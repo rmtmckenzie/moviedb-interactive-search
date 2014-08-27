@@ -12,11 +12,11 @@
 (function($){
 	var STATES = Object.freeze({EMPTY:0,UNLOADED:1,LOADING:2,LOADED:3});
 
-
 	var typeTimeout = -1;
 	var loadTimeout = -1;
 	var averageRespTime = 100;
 	var state = STATES.EMPTY;
+	var search = null;
 	
 	var KEYTIMEOUT = 1000;
 
@@ -25,15 +25,14 @@
 		var searchDiv = $(".search")
 		var searchBar = $(".search .search-bar");
 		var searchProgress = $(".search .search-progress");
+		var resultsDiv = $(".content");
 		
 		var progress = new ProgressIndicator(searchProgress);
 		var pos = new BoxPos(searchDiv);
+		var results = new ResultsDisplayer();
 		
-		//to stop flash at top before centered.
+		//to stop flash at top before centred.
 		searchDiv.transition({opacity:1},500);
-
-		//theMovieDb.search.getMulti({query:textVal},function(a){console.log(a)},function(b){console.log(b)}));
-
 		
 		searchBar.bind('input propertychange', function(d,e,f) {
 
@@ -42,9 +41,11 @@
 			if(l > 2) {
 				progress.startForward();
 				pos.startForward();
+				results.startSearch(searchBar.val());
 			} else if (l == 0 /* AND showing results */){
 				progress.startBackwards();
 				pos.startBackwards();
+				results.clear();
 			}
 			
 		});
@@ -60,16 +61,5 @@
 	
     $(window).resize();
 	
-	/* optional triggers
-	
-	$(window).load(function() {
-		
-	});
-	
-	$(window).resize(function() {
-		
-	});
-	
-	*/
 
 })(window.jQuery);

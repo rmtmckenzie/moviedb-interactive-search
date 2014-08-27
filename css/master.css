@@ -16,6 +16,7 @@ body {
 	font-size: 60px;
 	transition: top ease 1s 1s;
 	opacity: 0;
+	z-index: 100;
 }
 
 .search.top{
@@ -28,7 +29,7 @@ body {
 }
 
 .search .search-bar {
-	background: rgba(50, 50, 50, 0.1);
+	background: rgba(0, 0, 0, 0);
 	width: 100%;
 	color: #fff;
 }
@@ -59,6 +60,20 @@ body {
 
 .search .search-progress.right {
 	right: 0;
+}
+
+.content {
+	top: 85px;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	position: absolute;
+	overflow: auto;
+}
+
+.content .masonry-container .resultElement{
+	width: 100px;
+	height: 100px;
 }
 
 footer {
