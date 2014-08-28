@@ -34,6 +34,13 @@
 		//to stop flash at top before centred.
 		searchDiv.transition({opacity:1},500);
 		
+		searchBar.keyup(function(ev){
+			//enter
+			if(ev.keyCode == 13) {
+				searchBar.blur();
+			}
+		});
+		
 		searchBar.bind('input propertychange', function(d,e,f) {
 
 			var l = searchBar.val().length;

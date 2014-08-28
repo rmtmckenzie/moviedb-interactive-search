@@ -13,7 +13,7 @@
 		var _this = this;
 		
 		var doclick = function(ev){
-			_this.menuClick(ev.data);
+			_this.menuClick(ev.data,ev);
 		}
 		
 		$("#menu-all",domJQ).click(SEARCHTYPE.ALL,doclick);
@@ -26,10 +26,13 @@
 		});
 	}
 	
-	ResultsDisplayer.prototype.menuClick = function(type){
+	ResultsDisplayer.prototype.menuClick = function(type, ev){
 		if(type == this.searchtype){
 			return;
 		}
+		
+		$(".cssmenu li", this.dom).removeClass("active");
+		$(ev.currentTarget).addClass("active");
 		
 		switch(type){
 		case SEARCHTYPE.ALL:
