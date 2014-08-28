@@ -42,3 +42,4 @@ Basic functional testing was performed on this application. The following steps 
  Type in 3+ characters | search done, still displays specific as per menu
  Refresh web page | back to start
  Type in 3+ characters | search done, still displays specific as per menu
+ Type something common (e.g. morgan, under 'all') | scroll down, ensure more loaded
