@@ -128,7 +128,7 @@
 	}
 
 	ResultsDisplayer.prototype.error = function(err){
-		
+		console.log("Error getting results:",err);
 	}
 
 	ResultsDisplayer.prototype.clear = function(){
