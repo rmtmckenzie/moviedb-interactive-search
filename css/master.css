@@ -73,9 +73,11 @@ body {
 }
 
 .content .resultElement{
-	max-width: 185px;
+	width: 185px;
 	margin: 5px;
 	position: relative;
+	overflow: hidden;
+	float: left;
 }
 
 .content .resultElement .title {
@@ -88,14 +90,6 @@ body {
 	z-index: 10
 }
 
-.content .resultElement {
-	transition: all 0.5s;
-}
-
-.content .resultElement:hover{
-	transform: rotate(0deg) scale(1.08);
-}
-/*
 .content .resultElement .thumb{
 	transition: all 0.5s;
 }
@@ -103,9 +97,33 @@ body {
 .content .resultElement:hover .thumb{
 	transform: rotate(0deg) scale(1.08);
 }
-*/
+
 .content .resultElement .nopic{
-	
+	background-color: rgba(255,255,255,0.1);
+}
+
+.content .resultElement.active{
+	right:0;
+	left:0;	
+}
+
+.remodal .title {
+	font-size: 24px;
+	font-weight: bold;
+}
+
+.remodal .biography, .remodal .overview{
+	margin-bottom: 1em;
+	margin-top: 1em;
+}
+
+.remodal  .thumb{
+	float:left;
+	max-width: 40%;
+}
+
+.remodal .tagline {
+	font-style: italic;
 }
 
 footer {
