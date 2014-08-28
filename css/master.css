@@ -108,6 +108,11 @@ body {
 	left:0;	
 }
 
+.resultData{
+	background-color: rgba(0,11,31,0.8);
+	color: #eee;
+}
+
 .remodal .title {
 	font-size: 24px;
 	font-weight: bold;
@@ -121,6 +126,7 @@ body {
 .remodal  .thumb{
 	float:left;
 	max-width: 40%;
+	padding-right:15px;
 }
 
 .remodal .tagline {
@@ -135,4 +141,9 @@ footer {
 	margin: auto;
 	text-align: center;
 	color: #bbb;
+	cursor:pointer;
+}
+
+footer .moreinfo{
+	display:none;
 }

@@ -26,9 +26,9 @@
 		var searchBar = $(".search .search-bar");
 		var searchProgress = $(".search .search-progress");
 		var resultsDiv = $(".content");
+		var footer = $("footer");
 		
 		searchBar.eq(0).focus();
-		
 		
 		var progress = new ProgressIndicator(searchProgress);
 		var pos = new BoxPos(searchDiv);
@@ -60,6 +60,10 @@
 				results.clear();
 			}
 			
+		});
+		
+		footer.click(function(){
+			$(".moreinfo",footer).remodal().open();
 		});
 	});	
 	
