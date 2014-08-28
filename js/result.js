@@ -2,11 +2,6 @@
 
 // remap jQuery to $
 (function($){
-
-	var RESULTTYPE = Object.freeze({
-		MOVIE:1,PERSON:2,TV:3,
-		"movie":1,"person":2,"tv":3
-	});
 	
 	var getImage = function(path){
 		return theMovieDb.common.getImage({size:"w185",file:path});
@@ -15,7 +10,7 @@
 	function Result(data, parentDom, type){
 		
 		if(!type){
-			type = RESULTTYPE[data.media_type];
+			type = SEARCHSTRING[data.media_type];
 		}
 		this.type = type;
 	
@@ -27,7 +22,7 @@
 		dom.append(title).append(pic);
 		
 		switch(type){
-		case RESULTTYPE.MOVIE:
+		case SEARCHTYPE.MOVIE:
 			title.text(data.title);
 			
 			if(data.poster_path){
@@ -38,7 +33,7 @@
 			}
 			
 		break;
-		case RESULTTYPE.PERSON:
+		case SEARCHTYPE.PERSON:
 			title.text(data.name);
 			
 			if(data.profile_path){
@@ -48,7 +43,7 @@
 				pic.addClass("nopic");
 			}
 		break;
-		case RESULTTYPE.TV:
+		case SEARCHTYPE.TV:
 			title.text(data.name);
 			
 			if(data.poster_path){

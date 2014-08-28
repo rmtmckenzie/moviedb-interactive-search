@@ -29,7 +29,9 @@
 		
 		var progress = new ProgressIndicator(searchProgress);
 		var pos = new BoxPos(searchDiv);
-		var results = new ResultsDisplayer(resultsDiv);
+		
+		var hash = location.hash;
+		var results = new ResultsDisplayer(resultsDiv,SEARCHSTRING[hash]);
 		
 		//to stop flash at top before centred.
 		searchDiv.transition({opacity:1},500);
