@@ -64,6 +64,7 @@ body {
 }
 
 .content {
+	z-index:-100;
 	top: 85px;
 	bottom: 0;
 	right: 0;

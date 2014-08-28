@@ -111,7 +111,7 @@
 		//show the results of the search
 		this.displaySearch = this.search;
 		
-		this.dom.animate({"opacity":1},1000);
+		this.dom.animate({"opacity":1,"zIndex":100},1000);
 		
 		//parse results of the movieDB api request
 		var d = this.lastData = $.parseJSON(data),
@@ -162,7 +162,7 @@
 		if(masonry){
 			this.resultsDom.masonry('destroy');
 		}
-		this.dom.animate({"opacity":0},1000);
+		this.dom.animate({"opacity":0,"zIndex":-100},1000);
 	}
 	
 	
