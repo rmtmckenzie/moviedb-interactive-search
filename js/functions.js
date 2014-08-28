@@ -62,8 +62,10 @@
 			
 		});
 		
+		var attrInfo = $(".moreinfo",footer).remodal()
+		
 		footer.click(function(){
-			$(".moreinfo",footer).remodal().open();
+			attrInfo.open();
 		});
 	});	
 	
