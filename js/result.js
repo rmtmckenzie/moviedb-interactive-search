@@ -1,16 +1,22 @@
+/* result.js
+ *
+ * Contains class wihch handles creation of DOM for thumbnail and extended 
+ * data.
+ */
 
 
-// remap jQuery to $
 (function($){
 	
 	var NOOVERVIEWTEXT = "Sorry, no overview found!";
 	var NOTAGLINETEXT = "Sorry, no tagline found!";
 	var NOBIOGRAPHYTEXT = "Sorry, no biography found!";
-	
+
+	//wrapper to get image of allowed size.
 	var getImage = function(path){
 		return theMovieDb.common.getImage({size:"w185",file:path});
 	}	
 
+	//class for handling data and displaying
 	function Result(data, parentDom, type){
 		
 		if(!type){
@@ -25,15 +31,19 @@
 		
 		this.dom.obj = this;
 		
+		//click on element, show extended data
 		dom.click(this,function(ev){
 			ev.data.onClicked();
 		});
 		
+		// add itself as child of parent
 		parentDom.append(this.dom);
 	}
 	
 	Result.prototype.getTitleElement = function(){
+		// returns the title element based on data previously saved in class
 		var title = $('<div>',{"class":"title"});
+		//API uses different nomenclatures.
 		switch(this.type){
 		case SEARCHTYPE.MOVIE:
 			title.text(this.data.title);
@@ -46,8 +56,10 @@
 	}
 	
 	Result.prototype.getImageElement = function(){
+		// returns a thumbnail element, based on previous data
 		var pic = $('<img>',{"class":"thumb"}),
 			data = this.data;
+		//API uses different nomenclatures.
 		switch(this.type){
 		case SEARCHTYPE.MOVIE:
 			if(data.poster_path){
@@ -56,7 +68,6 @@
 				pic[0].src = "assets/movie.png";
 				pic.addClass("nopic");
 			}
-			
 		break;
 		case SEARCHTYPE.PERSON:
 			if(data.profile_path){
@@ -79,6 +90,7 @@
 	}
 	
 	Result.prototype.getMasonryItem = function(){
+		//convenience function for getting masonry object for object's dom
 		if(!this.masonryItem){
 			this.masonryItem = this.parentDom.masonry('getItem', this.dom[0]);
 		}
@@ -101,7 +113,7 @@
 		break;
 		}
 		
-		
+		//request more info from theMovieDb
 		typeclass.getById({id:this.data.id},
 			function(data){_this.displayData(data)},
 			function(err){_this.displayErr(err)}
@@ -109,6 +121,7 @@
 	}
 	
 	Result.prototype.displayData = function(data){
+		//display extended data in a popu
 		var item = this.getMasonryItem()
 		
 		var d =  $('<div>',{"class":"resultData remodal"});
@@ -116,6 +129,7 @@
 		
 		data = $.parseJSON(data);
 		
+		//load relevant data for each type
 		switch(this.type){
 		case SEARCHTYPE.MOVIE:
 			d.append($("<div>",{"class":"overview"}).text(data.overview || NOOVERVIEWTEXT));
