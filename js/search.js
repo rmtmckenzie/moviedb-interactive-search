@@ -16,7 +16,6 @@
 		);
 	}
 
-
 	function ResultsDisplayer(domJQ){
 		this.dom = domJQ;
 		this.resultsDom = $(".masonry-container",domJQ);
@@ -45,25 +44,28 @@
 	ResultsDisplayer.prototype.display = function(data){
 		this.displaySearch = this.search;
 		
+		
 		var d = $.parseJSON(data),
-			r = d.results;
+			r = d.results,
+			dom = $("<div>",{"class":"masonry-container"});
+			
+			this.resultsDom;
 			
 		console.log(r);
 		//TODO - add results to screen properly
 		
 		var els = []
 		for(var i = 0, l = r.length; i < l; i ++){
-			els.push(new Result(r[i],this.resultsDom));
+			els.push(new Result(r[i],dom));
 		}
 		
-		if(this.masonry){
-			this.masonry.reloadItems();
-		} else {
-			this.resultsDom.masonry({itemSelector:".resultElement"});
-			this.masonry = this.resultsDom.data('masonry');
-		}
+		this.resultsDom.replaceWith(dom);
 		
-		//this.resultsDom.text(data);
+		dom.imagesLoaded(function(){
+			dom.masonry();
+		});
+		
+		this.resultsDom = dom;
 	}
 
 	ResultsDisplayer.prototype.error = function(err){
@@ -71,9 +73,9 @@
 	}
 
 	ResultsDisplayer.prototype.clear = function(){
-		//TODO - clear
 		this.stop();
-		this.resultsDom.text("");
+		this.resultsDom.empty();
+		this.resultsDom.masonry('destroy')
 	}
 
 	window.ResultsDisplayer = ResultsDisplayer;

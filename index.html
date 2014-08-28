@@ -39,6 +39,7 @@
 	<link rel="stylesheet" href="libraries/reset/css/style.css" />
 	
 	<link rel="stylesheet" href="css/master.css">
+	<link rel="stylesheet" href="css/menu.css">
 	
 	<!-- Lea Verou's Prefix Free, lets you use un-prefixed properties in your CSS files -->
 	<script src="libraries/reset/js/prefixfree.min.js"></script>
@@ -79,12 +80,16 @@
 	
 	<div class="content">
 	
-		<header>
-			<!-- menu items for search (categories?) -->
-		</header>
+		<div id="cssmenu">
+			<ul>
+			   <li class="active"><a href="index.html"><span>All</span></a></li>
+			   <li><a href="#"><span>Movies</span></a></li>
+			   <li><a href="#"><span>People</span></a></li>
+			   <li class="last"><a href="#"><span>TV Shows</span></a></li>
+			</ul>
+		</div>
 		
-		<div class="masonry-container">
-		
+		<div class="masonry-container">		
 		</div>
 	</div>
 	
@@ -100,6 +105,7 @@
 <script src="libraries/jquery/jquery.transit.js"></script>
 
 <script src="libraries/masonry/masonry.pkgd.js"></script>
+<script src="libraries/masonry/imagesloaded.pkgd.js"></script>
 
 <script src="libraries/moviedb/themoviedb.js"></script>
 

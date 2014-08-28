@@ -71,9 +71,39 @@ body {
 	overflow: auto;
 }
 
-.content .masonry-container .resultElement{
-	width: 100px;
-	height: 100px;
+.content .resultElement{
+	max-width: 185px;
+	margin: 5px;
+}
+
+.content .resultElement .title {
+	position: absolute;
+	width: 100%;
+	padding: 2px;
+	background-color: rgba(0,0,0,0.4);
+	color: white;
+	text-align: center;
+	z-index: 10
+}
+
+.content .resultElement {
+	transition: all 0.5s;
+}
+
+.content .resultElement:hover{
+	transform: rotate(0deg) scale(1.08);
+}
+/*
+.content .resultElement .thumb{
+	transition: all 0.5s;
+}
+
+.content .resultElement:hover .thumb{
+	transform: rotate(0deg) scale(1.08);
+}
+*/
+.content .resultElement .nopic{
+	
 }
 
 footer {
