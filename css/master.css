@@ -75,6 +75,7 @@ body {
 .content .resultElement{
 	max-width: 185px;
 	margin: 5px;
+	position: relative;
 }
 
 .content .resultElement .title {

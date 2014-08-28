@@ -12,7 +12,7 @@
 		return theMovieDb.common.getImage({size:"w185",file:path});
 	}	
 
-	function Result(data, parentDom, type){
+	function Result(data, parentDom, type, masonry){
 		
 		if(!type){
 			type = RESULTTYPE[data.media_type];
@@ -34,7 +34,7 @@
 				pic[0].src = getImage(data.poster_path);
 			} else {
 				pic[0].src = "assets/movie.png";
-
+				pic.addClass("nopic");
 			}
 			
 		break;
@@ -55,10 +55,11 @@
 				pic[0].src = getImage(data.poster_path);
 			} else {
 				pic[0].src = "assets/tv.png";
-
+				pic.addClass("nopic");
 			}
 		break;
 		}
+		this.dom.obj = this;
 		
 		parentDom.append(this.dom);
 	}

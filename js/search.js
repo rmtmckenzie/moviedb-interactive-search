@@ -1,10 +1,7 @@
 
 (function($){
-
-	var SEARCHTYPE = Object.freeze({ALL:0,MOVIE:1,PERSON:2,TV:3});
 	
-	
-	function ResultsDisplayer(domJQ){
+	function ResultsDisplayer(domJQ,searchType){
 		this.dom = domJQ;
 		this.resultsDom = $(".masonry-container",domJQ);
 		this.displaying = false;
@@ -23,6 +20,10 @@
 		$("#menu-movies",domJQ).click(SEARCHTYPE.MOVIE,doclick);
 		$("#menu-people",domJQ).click(SEARCHTYPE.PERSON,doclick);
 		$("#menu-tv",domJQ).click(SEARCHTYPE.TV,doclick);
+		
+		domJQ.scroll(function(ev){
+			_this.handleScroll(ev);
+		});
 	}
 	
 	ResultsDisplayer.prototype.menuClick = function(type){
@@ -49,11 +50,12 @@
 		this.doSearch();	
 	}
 	
-	ResultsDisplayer.prototype.doSearch = function(){
+	ResultsDisplayer.prototype.doSearch = function(page){
 		var _this = this;
+		page = page || 1;
 		this.searchFunc(
-			{query:this.text, adult:false},
-			function(data){_this.display(data)},
+			{query:this.text, adult:false, page:page},
+			function(data){_this.display(data,page)},
 			function(data){_this.error(data)}
 		);
 	}
@@ -70,29 +72,39 @@
 		clearTimeout(this.timerID);
 	}
 
-	ResultsDisplayer.prototype.display = function(data){
+	ResultsDisplayer.prototype.display = function(data, page){
 		this.displaySearch = this.search;
 		
 		this.dom.animate({"opacity":1},1000);
 		
-		var d = $.parseJSON(data),
-			r = d.results,
+		var d = this.lastData = $.parseJSON(data),
+			results = d.results,
+			dom, masonry;
+			
+			
+		if(page == 1){
 			dom = $("<div>",{"class":"masonry-container"});
-						
-		console.log(r);
-		
-		var els = []
-		for(var i = 0, l = r.length; i < l; i ++){
-			els.push(new Result(r[i],dom,this.searchtype));
+		} else {
+			dom = this.resultsDom;
+			masonry = dom.data('masonry');
 		}
 		
-		this.resultsDom.replaceWith(dom);
+		var doms = [];
+		for(var i = 0, l = results.length; i < l; i ++){
+			var r = new Result(results[i],dom,this.searchtype,masonry);
+			doms.push(r.dom[0]);
+		}
+		
+		if(page == 1){
+			this.resultsDom.replaceWith(dom);
+			this.resultsDom = dom;
+		} else {
+			masonry.appended(doms);
+		}
 		
 		dom.imagesLoaded(function(){
 			dom.masonry();
 		});
-		
-		this.resultsDom = dom;
 	}
 
 	ResultsDisplayer.prototype.error = function(err){
@@ -104,6 +116,16 @@
 		this.resultsDom.empty();
 		this.resultsDom.masonry('destroy')
 		this.dom.animate({"opacity":0},1000);
+	}
+	
+	ResultsDisplayer.prototype.handleScroll = function(ev){
+		//if at bottom
+		if(this.dom.scrollTop() + this.dom.height() == this.dom[0].scrollHeight && this.lastData){
+			if(this.lastData.page <= this.lastData.total_pages){
+				this.doSearch(this.lastData.page + 1);
+			}
+			console.log("bottom!");
+		} 
 	}
 
 	window.ResultsDisplayer = ResultsDisplayer;
