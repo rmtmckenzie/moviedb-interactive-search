@@ -78,6 +78,7 @@ body {
 	position: relative;
 	overflow: hidden;
 	float: left;
+	cursor: pointer;
 }
 
 .content .resultElement .title {

@@ -27,6 +27,9 @@
 		var searchProgress = $(".search .search-progress");
 		var resultsDiv = $(".content");
 		
+		searchBar.eq(0).focus();
+		
+		
 		var progress = new ProgressIndicator(searchProgress);
 		var pos = new BoxPos(searchDiv);
 		
