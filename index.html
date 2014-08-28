@@ -39,6 +39,7 @@
 	<link rel="stylesheet" href="libraries/reset/css/style.css" />
 	
 	<link rel="stylesheet" href="css/master.css">
+	<link rel="stylesheet" href="css/menu.css">
 	
 	<!-- Lea Verou's Prefix Free, lets you use un-prefixed properties in your CSS files -->
 	<script src="libraries/reset/js/prefixfree.min.js"></script>
@@ -79,12 +80,16 @@
 	
 	<div class="content">
 	
-		<header>
-			<!-- menu items for search (categories?) -->
-		</header>
+		<div class="cssmenu">
+			<ul>
+			   <li id="menu-all" class="active"><a href="#all"><span>All</span></a></li>
+			   <li id="menu-movies"><a href="#movies"><span>Movies</span></a></li>
+			   <li id="menu-people"><a href="#people"><span>People</span></a></li>
+			   <li id="menu-tv" class="last"><a href="#tv"><span>TV Shows</span></a></li>
+			</ul>
+		</div>
 		
-		<div class="masonry-container">
-		
+		<div class="masonry-container">		
 		</div>
 	</div>
 	
@@ -100,6 +105,7 @@
 <script src="libraries/jquery/jquery.transit.js"></script>
 
 <script src="libraries/masonry/masonry.pkgd.js"></script>
+<script src="libraries/masonry/imagesloaded.pkgd.js"></script>
 
 <script src="libraries/moviedb/themoviedb.js"></script>
 
@@ -109,6 +115,7 @@
 
 
 <!-- this is where we put our custom functions -->
+<script src="js/defines.js"></script>
 <script src="js/searchBar.js"></script>
 <script src="js/result.js"></script>
 <script src="js/search.js"></script>

@@ -1,28 +1,63 @@
 
 (function($){
-
-	function Searcher(text,display){
-		this.text = text;
-		this.search = theMovieDb.search.getMulti;
-		this.display = display;
-	}
-
-	Searcher.prototype.doSearch = function(){
-		var d = this.display;
-		this.search(
-			{query:this.text, adult:false},
-			function(data){d.display(data)},
-			function(data){d.error(data)}
-		);
-	}
-
-
-	function ResultsDisplayer(domJQ){
+	
+	function ResultsDisplayer(domJQ,searchType){
 		this.dom = domJQ;
 		this.resultsDom = $(".masonry-container",domJQ);
-		this.desplaying = false;
+		this.displaying = false;
 		this.search = null;
 		this.timerID = -1;
+		this.searchType = SEARCHTYPE.ALL;
+		this.searchFunc = theMovieDb.search.getMulti;
+		
+		var _this = this;
+		
+		var doclick = function(ev){
+			_this.menuClick(ev.data);
+		}
+		
+		$("#menu-all",domJQ).click(SEARCHTYPE.ALL,doclick);
+		$("#menu-movies",domJQ).click(SEARCHTYPE.MOVIE,doclick);
+		$("#menu-people",domJQ).click(SEARCHTYPE.PERSON,doclick);
+		$("#menu-tv",domJQ).click(SEARCHTYPE.TV,doclick);
+		
+		domJQ.scroll(function(ev){
+			_this.handleScroll(ev);
+		});
+	}
+	
+	ResultsDisplayer.prototype.menuClick = function(type){
+		if(type == this.searchtype){
+			return;
+		}
+		
+		switch(type){
+		case SEARCHTYPE.ALL:
+			this.searchFunc = theMovieDb.search.getMulti;
+		break;
+		case SEARCHTYPE.MOVIE:
+			this.searchFunc = theMovieDb.search.getMovie;
+		break;
+		case SEARCHTYPE.PERSON:
+			this.searchFunc = theMovieDb.search.getPerson;
+		break;
+		case SEARCHTYPE.TV:
+			this.searchFunc = theMovieDb.search.getTv;
+		break;
+		}
+		
+		this.searchtype = type;
+		this.doSearch();	
+	}
+	
+	ResultsDisplayer.prototype.doSearch = function(page){
+		var _this = this;
+		page = page || 1;
+		this.searchFunc(
+			{query:this.text, adult:false, page:page},
+			function(data){_this.display(data,page)},
+			function(data){_this.error(data)}
+		);
 	}
 
 	ResultsDisplayer.prototype.startSearch = function(text) {
@@ -37,33 +72,39 @@
 		clearTimeout(this.timerID);
 	}
 
-	ResultsDisplayer.prototype.doSearch = function(){
-		this.search = new Searcher(this.text, this);
-		this.search.doSearch();
-	}
-
-	ResultsDisplayer.prototype.display = function(data){
+	ResultsDisplayer.prototype.display = function(data, page){
 		this.displaySearch = this.search;
 		
-		var d = $.parseJSON(data),
-			r = d.results;
+		this.dom.animate({"opacity":1},1000);
+		
+		var d = this.lastData = $.parseJSON(data),
+			results = d.results,
+			dom, masonry;
 			
-		console.log(r);
-		//TODO - add results to screen properly
-		
-		var els = []
-		for(var i = 0, l = r.length; i < l; i ++){
-			els.push(new Result(r[i],this.resultsDom));
-		}
-		
-		if(this.masonry){
-			this.masonry.reloadItems();
+			
+		if(page == 1){
+			dom = $("<div>",{"class":"masonry-container"});
 		} else {
-			this.resultsDom.masonry({itemSelector:".resultElement"});
-			this.masonry = this.resultsDom.data('masonry');
+			dom = this.resultsDom;
+			masonry = dom.data('masonry');
 		}
 		
-		//this.resultsDom.text(data);
+		var doms = [];
+		for(var i = 0, l = results.length; i < l; i ++){
+			var r = new Result(results[i],dom,this.searchtype,masonry);
+			doms.push(r.dom[0]);
+		}
+		
+		if(page == 1){
+			this.resultsDom.replaceWith(dom);
+			this.resultsDom = dom;
+		} else {
+			masonry.appended(doms);
+		}
+		
+		dom.imagesLoaded(function(){
+			dom.masonry();
+		});
 	}
 
 	ResultsDisplayer.prototype.error = function(err){
@@ -71,9 +112,20 @@
 	}
 
 	ResultsDisplayer.prototype.clear = function(){
-		//TODO - clear
 		this.stop();
-		this.resultsDom.text("");
+		this.resultsDom.empty();
+		this.resultsDom.masonry('destroy')
+		this.dom.animate({"opacity":0},1000);
+	}
+	
+	ResultsDisplayer.prototype.handleScroll = function(ev){
+		//if at bottom
+		if(this.dom.scrollTop() + this.dom.height() == this.dom[0].scrollHeight && this.lastData){
+			if(this.lastData.page <= this.lastData.total_pages){
+				this.doSearch(this.lastData.page + 1);
+			}
+			console.log("bottom!");
+		} 
 	}
 
 	window.ResultsDisplayer = ResultsDisplayer;
