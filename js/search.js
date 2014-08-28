@@ -128,13 +128,17 @@
 	}
 
 	ResultsDisplayer.prototype.error = function(err){
-		
+		console.log("Error getting results:",err);
 	}
 
 	ResultsDisplayer.prototype.clear = function(){
+		var masonry = this.dom.data('masonry');
+		
 		this.stop();
 		this.resultsDom.empty();
-		this.resultsDom.masonry('destroy')
+		if(masonry){
+			this.resultsDom.masonry('destroy');
+		}
 		this.dom.animate({"opacity":0},1000);
 	}
 	
@@ -144,7 +148,6 @@
 			if(this.lastData.page <= this.lastData.total_pages){
 				this.doSearch(this.lastData.page + 1);
 			}
-			console.log("bottom!");
 		} 
 	}
 
