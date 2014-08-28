@@ -12,7 +12,7 @@
 		return theMovieDb.common.getImage({size:"w185",file:path});
 	}	
 
-	function Result(data, parentDom, type, masonry){
+	function Result(data, parentDom, type){
 		
 		if(!type){
 			type = RESULTTYPE[data.media_type];

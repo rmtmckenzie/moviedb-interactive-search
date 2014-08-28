@@ -82,7 +82,7 @@
 		
 		var d = this.lastData = $.parseJSON(data),
 			results = d.results,
-			dom, masonry;
+			dom, masonry,packery;
 			
 			
 		if(page == 1){
@@ -94,7 +94,7 @@
 		
 		var doms = [];
 		for(var i = 0, l = results.length; i < l; i ++){
-			var r = new Result(results[i],dom,this.searchtype,masonry);
+			var r = new Result(results[i],dom,this.searchtype);
 			doms.push(r.dom[0]);
 		}
 		
@@ -106,6 +106,7 @@
 		}
 		
 		dom.imagesLoaded(function(){
+			alert("all images loaded.");
 			dom.masonry();
 		});
 	}

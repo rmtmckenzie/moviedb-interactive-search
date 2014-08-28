@@ -76,6 +76,7 @@ body {
 	max-width: 185px;
 	margin: 5px;
 	position: relative;
+	overflow: hidden;
 }
 
 .content .resultElement .title {
@@ -88,6 +89,7 @@ body {
 	z-index: 10
 }
 
+/*
 .content .resultElement {
 	transition: all 0.5s;
 }
@@ -95,7 +97,7 @@ body {
 .content .resultElement:hover{
 	transform: rotate(0deg) scale(1.08);
 }
-/*
+*/
 .content .resultElement .thumb{
 	transition: all 0.5s;
 }
@@ -103,7 +105,7 @@ body {
 .content .resultElement:hover .thumb{
 	transform: rotate(0deg) scale(1.08);
 }
-*/
+
 .content .resultElement .nopic{
 	
 }
