@@ -123,7 +123,7 @@
 		}
 		
 		dom.imagesLoaded(function(){
-			dom.masonry();
+			dom.masonry({itemSelector: '.resultElement'});
 		});
 	}
 
